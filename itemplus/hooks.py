@@ -213,3 +213,19 @@ app_license = "MIT"
 # auth_hooks = [
 # 	"itemplus.auth.validate"
 # ]
+
+
+fixtures=[
+    {
+    	"doctype":"Custom Field",
+        "filters": [
+            [
+                "name",
+                "in",
+                [ 
+                    "Item-custom_is_weight_item"
+                 ]
+            ]
+        ]
+    }
+]
