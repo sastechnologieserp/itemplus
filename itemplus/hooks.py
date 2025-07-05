@@ -28,7 +28,7 @@ app_license = "MIT"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
-# doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
+doctype_list_js = {"Item" : "scripts/item_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
@@ -116,13 +116,11 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Item": {
+		"on_update": "itemplus.events.item.on_update",
+	}
+}
 
 # Scheduled Tasks
 # ---------------
@@ -223,7 +221,8 @@ fixtures=[
                 "name",
                 "in",
                 [ 
-                    "Item-custom_is_weight_item"
+                    "Item-custom_is_weight_item",
+                    "Item-custom_hotkey",
                  ]
             ]
         ]
