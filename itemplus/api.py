@@ -10,15 +10,25 @@ def export_items(items):
     if not items:
         frappe.throw("No items to export.")
 
-    # Parse the JSON string to a Python list
     if isinstance(items, str):
         items = json.loads(items)
 
-    csv_content = "Item Code,Item Name,Custom Hotkey,Custom Is Weight Item\n"
+    csv_content = "Item Code,Item Name,Custom Hotkey,Custom Is Weight Item,Shelf Life In Days,Barcode Type,DB Code,Item Price\n"
     for item in items:
         item_name = item["name"] if isinstance(item, dict) and "name" in item else item
         item_doc = frappe.get_doc("Item", item_name)
-        csv_content += f"{item_doc.item_code},{item_doc.item_name},{getattr(item_doc, 'custom_hotkey', '')},{getattr(item_doc, 'custom_is_weight_item', '')}\n"
+        shelf_life = getattr(item_doc, 'shelf_life_in_days', '')
+        barcode_type = '101'
+        db_code = '21'
+        item_price = ''
+        cost_center = getattr(item_doc, 'cost_center', None)
+        if cost_center:
+            price = frappe.db.get_value("Item Price", {"item_code": item_doc.item_code, "selling": 0, "cost_center": cost_center}, "price_list_rate")
+            item_price = price if price is not None else ''
+        else:
+            price = frappe.db.get_value("Item Price", {"item_code": item_doc.item_code, "selling": 0}, "price_list_rate")
+            item_price = price if price is not None else ''
+        csv_content += f"{item_doc.item_code},{item_doc.item_name},{getattr(item_doc, 'custom_hotkey', '')},{getattr(item_doc, 'custom_is_weight_item', '')},{shelf_life},{barcode_type},{db_code},{item_price}\n"
 
     file_name = "itmepuls.csv"
     file_path = get_site_path("public", "files", file_name)
