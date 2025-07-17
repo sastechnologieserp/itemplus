@@ -224,6 +224,7 @@ fixtures=[
                     "Item-custom_is_weight_item",
                     "Item-custom_hotkey",
                     "POS Profile-custom_barcode_type",
+                    "Item-custom_item_name_secondary",
                  ]
             ]
         ]

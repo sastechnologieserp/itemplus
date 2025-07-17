@@ -23,10 +23,10 @@ def export_items(items):
         item_price = ''
         cost_center = getattr(item_doc, 'cost_center', None)
         if cost_center:
-            price = frappe.db.get_value("Item Price", {"item_code": item_doc.item_code, "selling": 0, "cost_center": cost_center}, "price_list_rate")
+            price = frappe.db.get_value("Item Price", {"item_code": item_doc.item_code, "selling": 1, "cost_center": cost_center}, "price_list_rate")
             item_price = price if price is not None else ''
         else:
-            price = frappe.db.get_value("Item Price", {"item_code": item_doc.item_code, "selling": 0}, "price_list_rate")
+            price = frappe.db.get_value("Item Price", {"item_code": item_doc.item_code, "selling": 1}, "price_list_rate")
             item_price = price if price is not None else ''
         csv_content += f"{item_doc.item_code},{item_doc.item_name},{getattr(item_doc, 'custom_hotkey', '')},{getattr(item_doc, 'custom_is_weight_item', '')},{shelf_life},{barcode_type},{db_code},{item_price}\n"
 
