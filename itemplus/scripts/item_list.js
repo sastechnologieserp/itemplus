@@ -6,10 +6,6 @@ frappe.listview_settings["Item"] = {
         if (listview.page && listview.page.add_menu_item) {
             listview.page.add_menu_item("Export Items", function () {
                 const items = listview.get_checked_items();
-                if (items.length === 0) {
-                    frappe.msgprint(__("Please select at least one item to export."));
-                    return;
-                }
                 frappe.call({
                     method: "itemplus.api.export_items",
                     freeze: true,
@@ -34,10 +30,6 @@ frappe.listview_settings["Item"] = {
         if (listview.page && listview.page.add_inner_button) {
             listview.page.add_inner_button("Export Items", function () {
                 const items = listview.get_checked_items();
-                if (items.length === 0) {
-                    frappe.msgprint(__("Please select at least one item to export."));
-                    return;
-                }
                 frappe.call({
                     method: "itemplus.api.export_items",
                     freeze: true,
