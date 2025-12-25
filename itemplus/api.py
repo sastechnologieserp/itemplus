@@ -36,8 +36,9 @@ def export_items(items=None):
         if not selected_item_names:
             return {"error": "No weight items found to export."}
 
-        # CSV header
-        csv_content = "Item Code,Item Name,Custom Hotkey,Custom Is Weight Item,Shelf Life In Days,Barcode Type,DB Code,Item Price\n"
+        # CSV header (with UTF-8 BOM for Excel compatibility)
+        csv_content = "\ufeff"  # UTF-8 BOM
+        csv_content += "Item Code,Item Name,Custom Hotkey,Custom Is Weight Item,Shelf Life In Days,Barcode Type,DB Code,Item Price\n"
 
         for item_name in selected_item_names:
             item_doc = frappe.get_doc("Item", item_name)
