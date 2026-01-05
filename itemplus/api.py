@@ -3,11 +3,12 @@ import json
 from frappe.utils import get_site_path
 
 @frappe.whitelist()
-def export_items(items=None):
+def export_items(items=None, price_list=None):
     """
     Export CSV of items where custom_is_weight_item = 1.
     - If no selection (items=None or empty): export all weight items.
     - If selection provided: export only selected items that are weight items.
+    - price_list: Price List to use for fetching item prices.
     """
 
     selected_item_names = []
@@ -47,18 +48,27 @@ def export_items(items=None):
             db_code = '21'
             item_price = ''
 
-            cost_center = getattr(item_doc, 'cost_center', None)
-            if cost_center:
-                item_price = frappe.db.get_value("Item Price", {
+            # Fetch item price based on the specified price list
+            if price_list:
+                filters = {
                     "item_code": item_doc.item_code,
-                    "selling": 1,
-                    "cost_center": cost_center
-                }, "price_list_rate") or ''
+                    "price_list": price_list
+                }
+                item_price = frappe.db.get_value("Item Price", filters, "price_list_rate") or ''
             else:
-                item_price = frappe.db.get_value("Item Price", {
-                    "item_code": item_doc.item_code,
-                    "selling": 1
-                }, "price_list_rate") or ''
+                # Fallback to original logic if no price list specified
+                cost_center = getattr(item_doc, 'cost_center', None)
+                if cost_center:
+                    item_price = frappe.db.get_value("Item Price", {
+                        "item_code": item_doc.item_code,
+                        "selling": 1,
+                        "cost_center": cost_center
+                    }, "price_list_rate") or ''
+                else:
+                    item_price = frappe.db.get_value("Item Price", {
+                        "item_code": item_doc.item_code,
+                        "selling": 1
+                    }, "price_list_rate") or ''
 
             csv_content += f"{item_doc.item_code},{item_doc.item_name},{getattr(item_doc, 'custom_hotkey', '')},{getattr(item_doc, 'custom_is_weight_item', '')},{shelf_life},{barcode_type},{db_code},{item_price}\n"
 
