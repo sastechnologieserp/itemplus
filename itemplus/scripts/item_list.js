@@ -7,13 +7,21 @@ frappe.listview_settings["Item"] = {
             listview.page.add_menu_item("Export Items", function () {
                 const items = listview.get_checked_items();
                 
-                // Prompt for price list selection
+                // Prompt for price list and format selection
                 frappe.prompt([
                     {
                         fieldname: 'price_list',
                         label: __('Price List'),
                         fieldtype: 'Link',
                         options: 'Price List',
+                        reqd: 1
+                    },
+                    {
+                        fieldname: 'file_format',
+                        label: __('File Format'),
+                        fieldtype: 'Select',
+                        options: 'Excel\nCSV',
+                        default: 'Excel',
                         reqd: 1
                     }
                 ], function(values) {
@@ -22,13 +30,14 @@ frappe.listview_settings["Item"] = {
                         freeze: true,
                         args: { 
                             items: items,
-                            price_list: values.price_list
+                            price_list: values.price_list,
+                            file_format: values.file_format
                         },
                         callback: function (r) {
                             if (r.message && r.message.file_url) {
                                 const a = document.createElement('a');
                                 a.href = r.message.file_url;
-                                a.download = r.message.file_name || 'itmepuls.csv';
+                                a.download = r.message.file_name || 'itemplus.xlsx';
                                 document.body.appendChild(a);
                                 a.click();
                                 document.body.removeChild(a);
@@ -38,7 +47,7 @@ frappe.listview_settings["Item"] = {
                             }
                         },
                     });
-                }, __('Select Price List'), __('Export'));
+                }, __('Select Price List and Format'), __('Export'));
             });
         }
 
@@ -46,13 +55,21 @@ frappe.listview_settings["Item"] = {
             listview.page.add_inner_button("Export Items", function () {
                 const items = listview.get_checked_items();
                 
-                // Prompt for price list selection
+                // Prompt for price list and format selection
                 frappe.prompt([
                     {
                         fieldname: 'price_list',
                         label: __('Price List'),
                         fieldtype: 'Link',
                         options: 'Price List',
+                        reqd: 1
+                    },
+                    {
+                        fieldname: 'file_format',
+                        label: __('File Format'),
+                        fieldtype: 'Select',
+                        options: 'Excel\nCSV',
+                        default: 'Excel',
                         reqd: 1
                     }
                 ], function(values) {
@@ -61,13 +78,14 @@ frappe.listview_settings["Item"] = {
                         freeze: true,
                         args: { 
                             items: items,
-                            price_list: values.price_list
+                            price_list: values.price_list,
+                            file_format: values.file_format
                         },
                         callback: function (r) {
                             if (r.message && r.message.file_url) {
                                 const a = document.createElement('a');
                                 a.href = r.message.file_url;
-                                a.download = r.message.file_name || 'itmepuls.csv';
+                                a.download = r.message.file_name || 'itemplus.xlsx';
                                 document.body.appendChild(a);
                                 a.click();
                                 document.body.removeChild(a);
@@ -77,7 +95,7 @@ frappe.listview_settings["Item"] = {
                             }
                         },
                     });
-                }, __('Select Price List'), __('Export'));
+                }, __('Select Price List and Format'), __('Export'));
             });
         }
     }
