@@ -28,7 +28,6 @@ app_license = "MIT"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
-doctype_list_js = {"Item" : "scripts/item_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
@@ -117,9 +116,9 @@ doctype_list_js = {"Item" : "scripts/item_list.js"}
 # Hook on document methods and events
 
 doc_events = {
-	"Item": {
-		"on_update": "itemplus.events.item.on_update",
-	}
+	# "Item": {
+	# 	"on_update": "itemplus.events.item.on_update",
+	# }
 }
 
 # Scheduled Tasks
@@ -211,22 +210,3 @@ doc_events = {
 # auth_hooks = [
 # 	"itemplus.auth.validate"
 # ]
-
-
-fixtures=[
-    {
-    	"doctype":"Custom Field",
-        "filters": [
-            [
-                "name",
-                "in",
-                [ 
-                    "Item-custom_is_weight_item",
-                    "Item-custom_hotkey",
-                    "POS Profile-custom_barcode_type",
-                    "Item-custom_item_name_secondary",
-                 ]
-            ]
-        ]
-    }
-]
